@@ -1,18 +1,9 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { motion, AnimatePresence } from "framer-motion";
 
-const tabs = {
-  specs: "Характеристики",
-  reviews: "Отзывы",
-  price: "Цена",
-  compare: "Сравнение"
-};
-
 export default function HonorX9BPage() {
-  const [activeTab, setActiveTab] = useState("specs");
-  const [reviews, setReviews] = useState(["Отличный телефон! Очень доволен."]); // Пример отзыва
+  const [activeTab, setActiveTab] = useState(null);
+  const [reviews, setReviews] = useState(["Отличный телефон! Очень доволен."]);
   const [newReview, setNewReview] = useState("");
 
   const handleAddReview = () => {
@@ -22,82 +13,156 @@ export default function HonorX9BPage() {
     }
   };
 
+  const tabs = [
+    { key: "specs", label: "Посмотреть характеристики" },
+    { key: "reviews", label: "Отзывы" },
+    { key: "price", label: "Цена" },
+    { key: "compare", label: "Сравнение" },
+  ];
+
   return (
-    <div className="p-6 max-w-3xl mx-auto">
-      <h1 className="text-4xl font-bold text-center mb-8">HONOR X9B</h1>
-      <div className="flex flex-wrap gap-4 justify-center mb-6">
-        {Object.entries(tabs).map(([key, label]) => (
-          <Button
-            key={key}
-            onClick={() => setActiveTab(key)}
-            className={`transition-all duration-300 ${activeTab === key ? "bg-blue-600 text-white" : "bg-gray-200"}`}
-          >
-            {label}
-          </Button>
-        ))}
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-white flex items-center justify-center p-6">
+      <div className="w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <div className="bg-indigo-600 p-8 text-center text-white">
+          <h1 className="text-5xl font-extrabold">HONOR X9B</h1>
+          <p className="mt-2 opacity-80">Флагман среднего класса с мощной батареей</p>
+        </div>
+        <div className="p-6">
+          <div className="flex flex-wrap justify-center gap-4 mb-6">
+            {tabs.map(tab => (
+              <motion.button
+                key={tab.key}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setActiveTab(tab.key)}
+                className={`px-5 py-2 rounded-full font-medium transition-colors duration-300 focus:outline-none 
+                  ${activeTab === tab.key ? 'bg-indigo-600 text-white shadow-lg' : 'bg-gray-200 text-gray-700'}`}
+              >
+                {tab.label}
+              </motion.button>
+            ))}
+          </div>
 
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeTab}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.4 }}
-        >
-          <Card>
-            <CardContent className="p-6">
-              {activeTab === "specs" && (
-                <ul className="list-disc list-inside">
-                  <li>Дисплей: 6.78" AMOLED, 120 Гц</li>
-                  <li>Процессор: Snapdragon 6 Gen 1</li>
-                  <li>ОЗУ: 8 ГБ</li>
-                  <li>Память: 256 ГБ</li>
-                  <li>Камера: 108 МП + 5 МП + 2 МП</li>
-                  <li>Батарея: 5800 мАч</li>
-                  <li>ОС: Android 13 с MagicOS 7.2</li>
+          <AnimatePresence exitBeforeEnter>
+            {activeTab === "specs" && (
+              <motion.div
+                key="specs"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4 }}
+                className="space-y-3"
+              >
+                <h2 className="text-2xl font-bold">Характеристики</h2>
+                <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <li className="bg-indigo-50 p-4 rounded-lg shadow-sm">Дисплей: 6.78" AMOLED, 120 Гц</li>
+                  <li className="bg-indigo-50 p-4 rounded-lg shadow-sm">Процессор: Snapdragon 6 Gen 1</li>
+                  <li className="bg-indigo-50 p-4 rounded-lg shadow-sm">ОЗУ: 8 ГБ</li>
+                  <li className="bg-indigo-50 p-4 rounded-lg shadow-sm">Память: 256 ГБ</li>
+                  <li className="bg-indigo-50 p-4 rounded-lg shadow-sm">Камера: 108 МП + 5 МП + 2 МП</li>
+                  <li className="bg-indigo-50 p-4 rounded-lg shadow-sm">Батарея: 5800 мАч</li>
+                  <li className="bg-indigo-50 p-4 rounded-lg shadow-sm">ОС: Android 13 с MagicOS 7.2</li>
                 </ul>
-              )}
+              </motion.div>
+            )}
 
-              {activeTab === "reviews" && (
-                <div>
-                  <h2 className="text-xl font-semibold mb-4">Отзывы:</h2>
-                  <ul className="mb-4 space-y-2">
-                    {reviews.map((rev, idx) => (
-                      <li key={idx} className="bg-gray-100 p-3 rounded-xl shadow">{rev}</li>
-                    ))}
-                  </ul>
-                  <textarea
-                    className="w-full p-3 border rounded mb-2"
-                    placeholder="Ваш отзыв..."
-                    value={newReview}
-                    onChange={(e) => setNewReview(e.target.value)}
-                  />
-                  <Button onClick={handleAddReview}>Добавить отзыв</Button>
+            {activeTab === "reviews" && (
+              <motion.div
+                key="reviews"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.4 }}
+              >
+                <h2 className="text-2xl font-bold mb-4">Отзывы</h2>
+                <div className="space-y-3 mb-4">
+                  {reviews.map((rev, idx) => (
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: idx * 0.1 }}
+                      className="bg-gray-100 p-4 rounded-lg shadow"
+                    >
+                      {rev}
+                    </motion.div>
+                  ))}
                 </div>
-              )}
+                <textarea
+                  className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-300 mb-2"
+                  placeholder="Ваш отзыв..."
+                  value={newReview}
+                  onChange={(e) => setNewReview(e.target.value)}
+                />
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleAddReview}
+                  className="px-6 py-3 bg-indigo-600 text-white rounded-full font-medium shadow"
+                >
+                  Добавить отзыв
+                </motion.button>
+              </motion.div>
+            )}
 
-              {activeTab === "price" && (
-                <div>
-                  <h2 className="text-2xl font-bold text-green-600">Цена: 34 999 ₽</h2>
-                  <p className="mt-2 text-sm text-gray-500">(цена может варьироваться в зависимости от магазина)</p>
-                </div>
-              )}
+            {activeTab === "price" && (
+              <motion.div
+                key="price"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.4 }}
+                className="text-center"
+              >
+                <h2 className="text-3xl font-bold text-green-600">34 999 ₽</h2>
+                <p className="mt-2 text-gray-500">Цена может варьироваться в зависимости от магазина</p>
+              </motion.div>
+            )}
 
-              {activeTab === "compare" && (
-                <div>
-                  <h2 className="text-xl font-semibold mb-4">Сравнение с другими моделями HONOR:</h2>
-                  <ul className="list-disc list-inside">
-                    <li><strong>HONOR X9B</strong>: AMOLED 120Гц, Snapdragon 6 Gen 1, 5800мАч</li>
-                    <li><strong>HONOR X8a</strong>: IPS LCD, Helio G88, 4500мАч</li>
-                    <li><strong>HONOR 90</strong>: AMOLED 120Гц, Snapdragon 7 Gen 1, 5000мАч</li>
-                  </ul>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </motion.div>
-      </AnimatePresence>
+            {activeTab === "compare" && (
+              <motion.div
+                key="compare"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.4 }}
+              >
+                <h2 className="text-2xl font-bold mb-4">Сравнение с другими HONOR</h2>
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr>
+                      <th className="border-b p-2">Модель</th>
+                      <th className="border-b p-2">Дисплей</th>
+                      <th className="border-b p-2">Процессор</th>
+                      <th className="border-b p-2">Батарея</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="hover:bg-gray-50">
+                      <td className="p-2 font-medium">HONOR X9B</td>
+                      <td className="p-2">AMOLED 120 Гц</td>
+                      <td className="p-2">Snapdragon 6 Gen 1</td>
+                      <td className="p-2">5800 мАч</td>
+                    </tr>
+                    <tr className="hover:bg-gray-50">
+                      <td className="p-2">HONOR X8a</td>
+                      <td className="p-2">IPS LCD</td>
+                      <td className="p-2">Helio G88</td>
+                      <td className="p-2">4500 мАч</td>
+                    </tr>
+                    <tr className="hover:bg-gray-50">
+                      <td className="p-2">HONOR 90</td>
+                      <td className="p-2">AMOLED 120 Гц</td>
+                      <td className="p-2">Snapdragon 7 Gen 1</td>
+                      <td className="p-2">5000 мАч</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
     </div>
   );
 }
