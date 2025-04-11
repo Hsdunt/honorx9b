@@ -1,0 +1,125 @@
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+import { Phone, Sun, Moon } from "lucide-react";
+import { useState } from "react";
+
+export default function HonorX9BPage() {
+  const [darkMode, setDarkMode] = useState(true);
+
+  return (
+    <div className={`${darkMode ? "bg-black text-white" : "bg-white text-black"} min-h-screen transition-colors duration-500 p-6`}>
+      <div className="flex justify-end mb-4">
+        <Button onClick={() => setDarkMode(!darkMode)} className="rounded-full p-2">
+          {darkMode ? <Sun className="text-yellow-400" /> : <Moon className="text-blue-800" />}
+        </Button>
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+        className="text-center mb-12"
+      >
+        <h1 className="text-5xl font-bold mb-4">HONOR X9B</h1>
+        <p className="text-xl text-gray-400 max-w-xl mx-auto">
+          Мощный. Элегантный. Устойчивый. Новый уровень мобильных технологий с HONOR X9B.
+        </p>
+      </motion.div>
+
+      <div className="grid md:grid-cols-2 gap-10 items-center">
+        <motion.img
+          src="https://fdn2.gsmarena.com/vv/pics/honor/honor-x9b-1.jpg"
+          alt="HONOR X9B"
+          className="rounded-2xl shadow-lg"
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1 }}
+        />
+
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1 }}
+        >
+          <Card className={`${darkMode ? "bg-gray-800" : "bg-gray-100 text-black"} border-none`}>
+            <CardContent className="space-y-4 p-6">
+              <h2 className="text-3xl font-semibold">Характеристики</h2>
+              <ul className="list-disc list-inside text-gray-400">
+                <li>Дисплей: 6.78" AMOLED, 120Hz</li>
+                <li>Процессор: Snapdragon 6 Gen 1</li>
+                <li>Камера: 108 МП + 5 МП + 2 МП</li>
+                <li>Батарея: 5800 мАч, быстрая зарядка</li>
+                <li>Память: до 12 ГБ RAM, до 256 ГБ ROM</li>
+              </ul>
+              <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white text-lg py-6 rounded-xl">
+                Купить сейчас
+              </Button>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </div>
+
+      <div className="mt-16">
+        <h2 className="text-3xl font-bold mb-4 text-center">Видео-презентация</h2>
+        <div className="aspect-w-16 aspect-h-9 max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-lg">
+          <iframe
+            src="https://www.youtube.com/embed/9ZQj2Zmj4xU"
+            title="HONOR X9B Presentation"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="w-full h-full"
+          ></iframe>
+        </div>
+      </div>
+
+      <div className="mt-16 max-w-5xl mx-auto">
+        <h2 className="text-3xl font-bold mb-6 text-center">Сравнение с другими моделями</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {["HONOR X9A", "HONOR 90", "HONOR Magic5 Lite"].map((model, i) => (
+            <Card key={i} className={`${darkMode ? "bg-gray-800" : "bg-gray-100 text-black"} text-center p-4`}>
+              <CardContent>
+                <h3 className="text-xl font-semibold mb-2">{model}</h3>
+                <ul className="text-sm text-gray-400 space-y-1">
+                  <li>Дисплей: 6.7" AMOLED</li>
+                  <li>Процессор: Snapdragon 695</li>
+                  <li>Камера: 64 МП / 108 МП</li>
+                  <li>Батарея: ~5000 мАч</li>
+                </ul>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-16 max-w-4xl mx-auto">
+        <h2 className="text-3xl font-bold mb-6 text-center">Отзывы пользователей</h2>
+        <div className="space-y-6">
+          {[
+            { name: "Анна", text: "Очень стильный телефон с классной камерой! Батареи хватает на два дня." },
+            { name: "Игорь", text: "Купил X9B после X9A — заметный апгрейд. Экран супер!" },
+            { name: "Мария", text: "Падал пару раз — целый. Приятно удивлена прочностью." },
+          ].map((review, i) => (
+            <Card key={i} className={`${darkMode ? "bg-gray-800" : "bg-gray-100 text-black"} p-4`}>
+              <CardContent>
+                <p className="font-semibold">{review.name}</p>
+                <p className="text-gray-400">"{review.text}"</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 0.3 }}
+        className="mt-16 text-center text-gray-400"
+      >
+        <Phone className="mx-auto mb-2" />
+        <p>© 2025 HONOR. Все права защищены.</p>
+      </motion.div>
+    </div>
+  );
+}
